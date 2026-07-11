@@ -100,8 +100,8 @@ export default class SortableTable {
     }).join('');
   }
 
-  private renderBody() {
-    return this.data.map(row => {
+  private renderBody(data: SortableTableData[] = this.data) {
+    return data.map(row => {
       const cells = this.headersConfig.map(header => {
         const cellData = row[header.id];
         if (header.template) {
@@ -131,7 +131,7 @@ export default class SortableTable {
 
     const sortType = column.sortType || 'string';
 
-    this.data.sort((a, b) => {
+    const sorted = [...this.data].sort((a, b) => {
       const direction = directions[order];
       const aValue = a[field];
       const bValue = b[field];
@@ -145,7 +145,7 @@ export default class SortableTable {
       }
     });
 
-    this.bodyElement.innerHTML = this.renderBody();
+    this.bodyElement.innerHTML = this.renderBody(sorted);
     this.updateHeaderSort(field, order);
   }
 
